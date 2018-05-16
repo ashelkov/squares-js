@@ -25,7 +25,7 @@
   font-size: 24px;
   margin: 2px;
   cursor: pointer;
-  transition: left .3s ease, top .3s ease, opacity .3s ease;
+  transition: left .25s ease, top .25s ease, opacity .25s ease;
 }
 
 .squares-table button:hover {

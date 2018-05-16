@@ -1,10 +1,8 @@
 'use strict';
 
 (function(window) {
-
-  // hovered cell coords
-  let rowIndex;
-  let colIndex;
+  // hovered row and column indexes
+  let rowIndex, colIndex;
 
   // define elements/controls
   const container = document.querySelector('.squares-table');
@@ -24,18 +22,17 @@
   delColButton.addEventListener('click', deleteColumn);
 
   function handleMouseEnter() {
-    const rowCount = table.querySelectorAll('tr').length;
-    const colCount = table.querySelector('tr').children.length;
-    if (rowCount > 1) delRowButton.style.visibility = 'visible';
-    if (colCount > 1) delColButton.style.visibility = 'visible';
+    delRowButton.style.visibility = 'visible';
+    delColButton.style.visibility = 'visible';
   };
 
   function handleMouseLeave() {
     setTimeout(function() {
+      if (container.querySelector('table:hover')) return;
       if (container.querySelector('.del-btn:hover')) return;
       delRowButton.style.visibility = 'hidden';
       delColButton.style.visibility = 'hidden';
-    }, 300);
+    }, 200);
   };
 
   function handleMouseMove(e) {
@@ -51,24 +48,32 @@
   function addRow() {
     const newRow = table.querySelector('tr').cloneNode(true);
     table.querySelector('tbody').appendChild(newRow);
+    actionCallback();
   };
 
   function addColumn() {
     table.querySelectorAll('tr').forEach((tr) => {
       tr.appendChild(tr.querySelector('td').cloneNode());
     });
+    actionCallback();
   };
 
   function deleteRow() {
     table.querySelectorAll('tr')[rowIndex].remove();
-    delRowButton.style.visibility = 'hidden';
+    actionCallback();
   };
 
   function deleteColumn() {
     table.querySelectorAll('tr').forEach((tr) => {
       tr.querySelectorAll('td')[rowIndex].remove();
     });
-    delColButton.style.visibility = 'hidden';
+    actionCallback();
   };
 
+  function actionCallback() {
+    delRowButton.style.display = table.querySelectorAll('tr')[1] ? 'block' : 'none';
+    delColButton.style.display = table.querySelector('tr').children[1] ? 'block' : 'none';
+    delRowButton.style.visibility = 'hidden';
+    delColButton.style.visibility = 'hidden';
+  }
 }(window));
